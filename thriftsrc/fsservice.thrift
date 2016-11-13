@@ -1,5 +1,5 @@
-namespace java trabalhothrift 
-namespace py trabalhothrift
+namespace java projeto3sd 
+namespace py projeto3sd
 
 struct Page
 {
