@@ -1,8 +1,6 @@
 namespace java projeto3sd 
 namespace py projeto3sd
 
-
-
 struct TPage
 {
     1:i64 creation,
@@ -10,7 +8,6 @@ struct TPage
     3:i32 version,
     4:binary data,
 }
-
 
 service FSService
 {

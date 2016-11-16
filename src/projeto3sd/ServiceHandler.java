@@ -14,7 +14,10 @@ public class ServiceHandler implements FSService.Iface {
 
     @Override
     public TPage GetFile(String path) throws TException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+        
+        
+        return null;
     }
 
     @Override

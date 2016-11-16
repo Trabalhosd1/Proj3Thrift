@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author Dri
  */
-public class Page {
+public class Page extends TPage {
     private long creation;
     private long modification;
     private int version = -1;
@@ -26,36 +26,16 @@ public class Page {
     public long getCreation() {
         return creation;
     }
-
-    public void setCreation(long creation) {
-        this.creation = creation;
-    }
-
     public long getModification() {
         return modification;
-    }
-
-    public void setModification(long modification) {
-        this.modification = modification;
     }
 
     public int getVersion() {
         return version;
     }
 
-    public void setVersion(int version) {
-        this.version = version;
-    }
-
     public byte[] getData() {
         return data;
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
-    }
-    
-    
-    
-    
 }
