@@ -8,6 +8,9 @@ public class Requisicao {
     int versao = -1;
     ByteBuffer dados = null;
     
+    public Requisicao(){
+    }
+    
     public Requisicao(String metodo){
         this.metodo = metodo;
     }

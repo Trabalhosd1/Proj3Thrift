@@ -13,11 +13,11 @@ public class FileSystem {
     
     
     public void AddArquivo(Page p, String path){
-        arquivos.add(path.hashCode(), p);
+        arquivos.add( Math.abs(path.hashCode()) , p);
     }
     
     public Page GetArquivo(String path){
-        return arquivos.get(path.hashCode());
+        return arquivos.get( Math.abs(path.hashCode()) );
     }
     
     

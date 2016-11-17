@@ -37,14 +37,14 @@ class Server {
         FileSystem fs = new FileSystem();
         
         try {
-        handler = new ServiceHandler(fs, servers, nroServ, new Requisicao());
-        processor = new FSService.Processor(handler);
+            handler = new ServiceHandler(fs, servers, nroServ, new Requisicao());
+            processor = new FSService.Processor(handler);
         
-        Runnable simple = new Runnable() {
-            public void run() {
-                StartaServer(processor, servers[nroServ]);
-            }
-        };
+            Runnable simple = new Runnable() {
+                public void run() {
+                    StartaServer(processor, servers[nroServ]);
+                }
+            };
         
         }catch(Exception x){
             x.printStackTrace();
