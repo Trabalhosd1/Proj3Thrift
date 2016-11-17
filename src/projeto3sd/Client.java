@@ -48,7 +48,7 @@ public class Client {
 
     }
 
-    public static TPage perform(FSService.Client client, Requisicao req) throws org.apache.thrift.TException {
+    public static Page perform(FSService.Client client, Requisicao req) throws org.apache.thrift.TException {
 
         switch (req.metodo) {
             case "GET":

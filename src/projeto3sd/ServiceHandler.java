@@ -1,6 +1,8 @@
 package projeto3sd;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -50,7 +52,27 @@ public class ServiceHandler implements FSService.Iface {
 
     @Override
     public boolean AddFile(String path, ByteBuffer data) throws TException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Page pagina = null;        
+        pagina = new Page(Integer.valueOf(new Date().toString()), Integer.valueOf(new Date().toString()), data.array() );
+
+        int teste;
+        teste = testaServidor();
+        
+        try {
+
+            if (teste == this.nroServ) {
+                fs.AddArquivo(  pagina , path);
+                return true;
+            } else {
+                pagina = this.startaServerClient(req, servers[teste]);
+                return true;
+            }
+
+        } catch (Exception e) {
+            System.out.println("erro !!! " + e);
+            return false;
+        }
+    
     }
 
     @Override
@@ -86,8 +108,8 @@ public class ServiceHandler implements FSService.Iface {
 
     }
 
-    private TPage startaServerClient(Requisicao req, int server) {
-        TPage pagina = null;
+    private Page startaServerClient(Requisicao req, int server) {
+        Page pagina = null;
 
         try {
             TTransport transport;
