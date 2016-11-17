@@ -34,8 +34,10 @@ class Server {
         //identifica a instância de servidor
         int idServ = Integer.parseInt(args[0]);
         
+        FileSystem fs = new FileSystem();
+        
         try {
-        handler = new ServiceHandler();
+        handler = new ServiceHandler(fs, servers, nroServ, new Requisicao());
         processor = new FSService.Processor(handler);
         
         Runnable simple = new Runnable() {
