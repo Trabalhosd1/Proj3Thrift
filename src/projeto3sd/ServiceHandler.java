@@ -47,7 +47,9 @@ public class ServiceHandler implements FSService.Iface {
 
     @Override
     public List<TPage> ListFiles(String path) throws TException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        return fs.ListSubFiles(path);
+    
     }
 
     @Override
@@ -77,22 +79,39 @@ public class ServiceHandler implements FSService.Iface {
 
     @Override
     public TPage UpdateFile(String path, ByteBuffer data) throws TException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        
+        // verifica se o arquivo existe, se existe seta data dele, se não existe, ignora operação
+        TPage pagina = null;
+        if((pagina = fs.GetArquivo(path))!=null){
+            pagina.setData(data.array());
+        }
+        return pagina;
+     }
 
     @Override
     public TPage DeleteFile(String path) throws TException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        fs.DeletaArquivo(path);
+        return null;
     }
 
     @Override
     public TPage UpdateVersion(String path, ByteBuffer data, int version) throws TException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // verifica se o arquivo existe, se existe e versão atual menor que version, seta data dele, se não, ignora operação
+        TPage pagina = null;
+        if((pagina = fs.GetArquivo(path))!=null && pagina.getVersion() < version){
+            pagina.setData(data.array());
+        }
+        return pagina;
     }
 
     @Override
     public TPage DeleteVersion(String path, int version) throws TException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        TPage pagina = null;
+        if((pagina = fs.GetArquivo(path))!=null && pagina.getVersion() < version)
+            fs.DeletaArquivo(path);
+        return null;
+    
     }
 
 
