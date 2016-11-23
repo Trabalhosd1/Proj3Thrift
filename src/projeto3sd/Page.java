@@ -5,6 +5,7 @@
  */
 package projeto3sd;
 
+import java.nio.ByteBuffer;
 import java.util.Date;
 
 /**
@@ -18,10 +19,14 @@ public class Page extends TPage {
     private byte[] data;
     
     Page(long creation, long modification, byte[] data){
+        super(creation,modification,-1, ByteBuffer.wrap( data) );
         this.creation = creation;
         this.modification = modification;
         this.data = data;
     }
+    
+    
+
 
     public long getCreation() {
         return creation;

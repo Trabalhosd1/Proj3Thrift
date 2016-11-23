@@ -3,6 +3,7 @@ package projeto3sd;
 import java.nio.ByteBuffer;
 
 public class Requisicao {
+
     String metodo = null;
     String path = null;
     int versao = -1;

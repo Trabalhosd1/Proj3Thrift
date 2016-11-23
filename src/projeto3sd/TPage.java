@@ -144,6 +144,13 @@ public class TPage implements org.apache.thrift.TBase<TPage, TPage._Fields>, jav
   public TPage() {
   }
 
+  public void dump(){
+        System.out.println("Criação do arquivo: " + this.creation);
+        System.out.println("Última modificação: " + this.modification);
+        System.out.println("Versão: " + this.version);
+        System.out.println("Dados: " + this.data.toString());
+  }
+  
   public TPage(
     long creation,
     long modification,

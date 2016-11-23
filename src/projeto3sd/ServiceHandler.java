@@ -33,37 +33,37 @@ public class ServiceHandler implements FSService.Iface {
     public TPage GetFile(String path) throws TException {
         int teste;
         TPage pagina = null;
-
-        teste = testaServidor();
+        teste = testaServidor(servers, path);
 
         if (teste == this.nroServ) {
             pagina = fs.GetArquivo(path);
         } else {
             pagina = this.startaServerClient(req, servers[teste]);
         }
-
+        
         return pagina;
     }
 
     @Override
     public List<TPage> ListFiles(String path) throws TException {
-        
+
         return fs.ListSubFiles(path);
-    
+
     }
 
     @Override
     public boolean AddFile(String path, ByteBuffer data) throws TException {
-        Page pagina = null;        
-        pagina = new Page(Integer.valueOf(new Date().toString()), Integer.valueOf(new Date().toString()), data.array() );
-
-        int teste;
-        teste = testaServidor();
+        Page pagina = null;
+        //pagina = new Page(Integer.valueOf(new Date().toString()), Integer.valueOf(new Date().toString()), data.array());
+        pagina = new Page(new Date().getTime(), new Date().getTime(), data.array());
         
+        int teste;
+        teste = testaServidor(servers, path);
+
         try {
 
             if (teste == this.nroServ) {
-                fs.AddArquivo(  pagina , path);
+                fs.AddArquivo(pagina, path);
                 return true;
             } else {
                 pagina = this.startaServerClient(req, servers[teste]);
@@ -74,56 +74,92 @@ public class ServiceHandler implements FSService.Iface {
             System.out.println("erro !!! " + e);
             return false;
         }
-    
+
     }
 
     @Override
     public TPage UpdateFile(String path, ByteBuffer data) throws TException {
-        
-        // verifica se o arquivo existe, se existe seta data dele, se não existe, ignora operação
         TPage pagina = null;
-        if((pagina = fs.GetArquivo(path))!=null){
-            pagina.setData(data.array());
+
+        int teste;
+        teste = testaServidor(servers, path);
+
+        if (teste == nroServ) {
+            // verifica se o arquivo existe, se existe seta data dele, se não existe, ignora operação
+            if ((pagina = fs.GetArquivo(path)) != null) {
+                pagina.setData(data.array());
+            }
+        } else {
+            pagina = this.startaServerClient(req, servers[teste]);
         }
         return pagina;
-     }
+    }
 
     @Override
     public TPage DeleteFile(String path) throws TException {
-        fs.DeletaArquivo(path);
-        return null;
+
+        int teste;
+        TPage pagina = null;
+
+        teste = testaServidor(servers, path);
+
+        if (teste == nroServ) {
+
+            if ((pagina = fs.GetArquivo(path)) != null) {
+                fs.DeletaArquivo(path);
+            }
+        } else {
+            pagina = this.startaServerClient(req, servers[teste]);
+        }
+        return pagina;
     }
 
     @Override
     public TPage UpdateVersion(String path, ByteBuffer data, int version) throws TException {
-        // verifica se o arquivo existe, se existe e versão atual menor que version, seta data dele, se não, ignora operação
+
+        int teste;
         TPage pagina = null;
-        if((pagina = fs.GetArquivo(path))!=null && pagina.getVersion() < version){
-            pagina.setData(data.array());
+
+        teste = testaServidor(servers, path);
+
+        if (teste == nroServ) {
+            if ((pagina = fs.GetArquivo(path)) != null && pagina.getVersion() == version) {
+                pagina.setData(data.array());
+            }
+        } else {
+            pagina = this.startaServerClient(req, servers[teste]);
         }
         return pagina;
     }
 
     @Override
     public TPage DeleteVersion(String path, int version) throws TException {
-        
+
+        int teste;
         TPage pagina = null;
-        if((pagina = fs.GetArquivo(path))!=null && pagina.getVersion() < version)
-            fs.DeletaArquivo(path);
-        return null;
-    
+
+        teste = testaServidor(servers, path);
+
+        if (teste == nroServ) {
+            if ((pagina = fs.GetArquivo(path)) != null && pagina.getVersion() < version) {
+                fs.DeletaArquivo(path);
+            }
+        } else {
+            pagina = this.startaServerClient(req, servers[teste]);
+        }
+        return pagina;
     }
 
-
-    public int testaServidor() {
+    public int testaServidor(int servers[], String path) {
         int nroTeste = 0;
+        int quociente;
+
+        quociente = servers.length;
+        nroTeste = Math.abs(path.hashCode());
+        //nroTeste = Integer.parseInt(path)%quociente;
 
         //testa se o arquivo pertence a esse servidor, se pertencer retorna o número do próprio servidor, se não retorna o número do servidor a que o arquivo pertence
-        if (1 == 1) {
-            return nroTeste;
-        } else {
-            return nroTeste;
-        }
+        return nroTeste;
 
     }
 
@@ -144,5 +180,3 @@ public class ServiceHandler implements FSService.Iface {
         return pagina;
     }
 }
-
-

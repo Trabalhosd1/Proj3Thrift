@@ -40,28 +40,14 @@ class Server {
             handler = new ServiceHandler(fs, servers, nroServ, new Requisicao());
             processor = new FSService.Processor(handler);
         
-            Runnable simple = new Runnable() {
-                public void run() {
-                    StartaServer(processor, servers[nroServ]);
-                }
-            };
+            TServerTransport serverTransport = new TServerSocket(servers[idServ]);
+            TServer server = new TSimpleServer(new TServer.Args(serverTransport).processor(processor));
+            System.out.println("Starting the simple server...");
+            server.serve();
         
         }catch(Exception x){
             x.printStackTrace();
         }
        
     }
-    
-          
-    public static void StartaServer(FSService.Processor processor, int porta) {
-        try {
-            TServerTransport serverTransport = new TServerSocket(porta);
-            TServer server = new TSimpleServer(new TServer.Args(serverTransport).processor(processor));
-            System.out.println("Starting the simple server...");
-            server.serve();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
 }
